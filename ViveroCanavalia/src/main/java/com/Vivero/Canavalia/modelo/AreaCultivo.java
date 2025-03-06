@@ -2,12 +2,12 @@ package com.Vivero.Canavalia.modelo;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.List;
 
 @Entity
 @Table(name = "AreaCultivo")
 @Data
 public class AreaCultivo {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -18,4 +18,6 @@ public class AreaCultivo {
     @Column(length = 25)
     private String medida;
 
+    @OneToMany(mappedBy = "areaCultivo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PlantinAreaCultivo> plantinAreas;
 }
