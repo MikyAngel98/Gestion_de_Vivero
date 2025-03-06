@@ -2,21 +2,26 @@ package com.Vivero.Canavalia.controlador;
 
 import com.Vivero.Canavalia.modelo.Plantin;
 import com.Vivero.Canavalia.servicios.PlantinServicios;
+
+import java.net.URI;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping("/api/plantines")
+@RequestMapping("/ plantines")
 public class PlantinControlador {
      @Autowired
     private PlantinServicios plantinService;
 
     // Listar todos los plantines
     @GetMapping
-    public List<Plantin> listarTodos() {
-        return plantinService.listarTodos();
+    public ResponseEntity<List<Plantin>>  listarTodos() {
+
+        return ResponseEntity.ok(plantinService.listarTodos());
+        //return plantinService.listarTodos();
     }
 
     // Buscar un plantín por ID
@@ -28,8 +33,12 @@ public class PlantinControlador {
 
     // Crear un nuevo plantín
     @PostMapping
-    public Plantin crear(@RequestBody Plantin plantin) {
-        return plantinService.guardar(plantin);
+    public ResponseEntity<?> crear(@RequestBody Plantin plantin) {
+
+        plantinService.guardar(plantin);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(plantin.getId()).toUri();
+        return ResponseEntity.created(location).build();
     }
 
     // Actualizar un plantín

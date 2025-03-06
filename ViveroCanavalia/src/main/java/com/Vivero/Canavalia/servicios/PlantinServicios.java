@@ -17,14 +17,17 @@ public class PlantinServicios {
     }
 
     public Optional<Plantin> buscarPorId(Integer id) {
+
         return plantinRepositorio.findById(id);
     }
 
     public Plantin guardar(Plantin plantin) {
+
         return plantinRepositorio.save(plantin);
     }
 
     public void eliminar(Integer id) {
+
         plantinRepositorio.deleteById(id);
     }
 }
