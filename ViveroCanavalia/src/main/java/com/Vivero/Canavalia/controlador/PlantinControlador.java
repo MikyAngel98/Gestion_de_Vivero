@@ -6,12 +6,13 @@ import com.Vivero.Canavalia.servicios.PlantinServicios;
 import java.net.URI;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping("/ plantines")
+@RequestMapping("/plantines")
 public class PlantinControlador {
      @Autowired
     private PlantinServicios plantinService;
@@ -39,6 +40,18 @@ public class PlantinControlador {
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(plantin.getId()).toUri();
         return ResponseEntity.created(location).build();
+    }
+
+    //Buscar plantin por nombre
+    @GetMapping("/buscar/{nombre}")
+    public ResponseEntity<?> buscarPlantinPorNombre(@PathVariable String nombre){
+
+        List<Plantin> resultado = plantinService.buscarPlantinPorNombre(nombre);
+
+        if (resultado.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron plantines con el nombre " + nombre);
+        }
+        return ResponseEntity.ok(resultado);
     }
 
     // Actualizar un plantín

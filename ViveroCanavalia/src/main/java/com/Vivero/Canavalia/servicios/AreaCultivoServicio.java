@@ -1,0 +1,40 @@
+package com.Vivero.Canavalia.servicios;
+
+import com.Vivero.Canavalia.modelo.AreaCultivo;
+import com.Vivero.Canavalia.repositorio.AreaCultivoRepositorio;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+
+@Service
+public class AreaCultivoServicio {
+
+    @Autowired
+    private AreaCultivoRepositorio areaCultivoRepositorio;
+
+    //Listar todos las areas de cultivo de la Bdd
+    public List<AreaCultivo> listarAreasDeCultivo(){
+        return areaCultivoRepositorio.findAll();
+    }
+
+    //Buscar area de cultivo po id
+    public Optional<AreaCultivo> buscarAreaCultivoPorId (Integer id){
+        return areaCultivoRepositorio.findById(id);
+    }
+
+    //Buscar por letras en el nombre
+    public List<AreaCultivo> buscarAreaCultivoPorNombre(String nombre){
+        return areaCultivoRepositorio.findByNombreContaining(nombre);
+    }
+
+    //guardar nuevo area de cultivo
+    public AreaCultivo guardarAreaCultivo (AreaCultivo areaCultivo){
+        return areaCultivoRepositorio.save(areaCultivo);
+    }
+
+    //Eliminar area de cultivo por id
+    public void eliminarAreaCultivo (Integer id){
+        areaCultivoRepositorio.deleteById(id);
+    }
+}

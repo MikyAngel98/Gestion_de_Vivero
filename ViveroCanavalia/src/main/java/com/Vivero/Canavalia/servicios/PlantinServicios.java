@@ -16,6 +16,10 @@ public class PlantinServicios {
         return plantinRepositorio.findAll();
     }
 
+    public List<Plantin> buscarPlantinPorNombre(String nombre){
+        return plantinRepositorio.findByNombreContaining(nombre);
+    }
+
     public Optional<Plantin> buscarPorId(Integer id) {
 
         return plantinRepositorio.findById(id);
