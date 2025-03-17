@@ -37,7 +37,6 @@ CREATE TABLE PlantinAreaCultivo (
     tamaño NVARCHAR(50),
     FOREIGN KEY (plantin_id) REFERENCES Plantin(id),
     FOREIGN KEY (area_cultivo_id) REFERENCES AreaCultivo(id),
-    UNIQUE (plantin_id, area_cultivo_id) -- Evita registros duplicados
 );
 GO
 
@@ -71,7 +70,7 @@ GO
 CREATE TABLE HistorialMovimientos (
     id INT IDENTITY(1,1) PRIMARY KEY,
     plantin_id INT NOT NULL,
-    tipo_movimiento NVARCHAR(10) CHECK (tipo_movimiento IN ('Ingreso', 'Salida')),
+    tipo_movimiento NVARCHAR(10),
     cantidad INT NOT NULL CHECK (cantidad > 0),
     fecha_movimiento DATETIME NOT NULL DEFAULT GETDATE(),
     area_cultivo_id INT,

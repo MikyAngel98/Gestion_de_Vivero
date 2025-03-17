@@ -10,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/areaCultivo")
@@ -33,6 +34,19 @@ public class AreaCultivoControlador {
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(areaCultivo.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
+
+    //ver que plantines contiene el area de cultivo
+    @GetMapping("detalle/{id}")
+    public ResponseEntity<List<Map<String, Object>>> verUbicacionPlantin(@PathVariable Integer id){
+
+        List<Map<String, Object>> resultado = areaCultivoServicio.verPlantinDeAreaCultivo(id);
+
+        if (resultado.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(resultado);
+    }
+
 
     //actualizar areas de cultivo
     @PutMapping("/{id}")

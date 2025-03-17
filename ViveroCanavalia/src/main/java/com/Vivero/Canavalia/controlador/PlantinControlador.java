@@ -54,6 +54,18 @@ public class PlantinControlador {
         return ResponseEntity.ok(resultado);
     }
 
+    //ver en que Area de cultivo(ubicacion) esta el plantin
+    @GetMapping("/ubicacion/{nombrePlantin}")
+    public ResponseEntity<List<Map<String, Object>>> verUbicacionPlantin(@PathVariable String nombrePlantin){
+
+        List<Map<String, Object>> resultado = plantinService.verUbicacionDePlantin(nombrePlantin);
+
+        if (resultado.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(resultado);
+    }
+
     // Actualizar un plantín
     @PutMapping("/{id}")
     public ResponseEntity<Plantin> actualizar(@PathVariable Integer id, @RequestBody Plantin plantin) {

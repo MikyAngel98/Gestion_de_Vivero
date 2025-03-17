@@ -1,5 +1,6 @@
 package com.Vivero.Canavalia.modelo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -22,6 +23,7 @@ public class Plantin {
     private Integer stockActual = 0;
 
     @OneToMany(mappedBy = "plantin", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<PlantinAreaCultivo> plantinAreas;
 }
 

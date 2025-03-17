@@ -28,6 +28,24 @@ public class AreaCultivoServicio {
         return areaCultivoRepositorio.findByNombreContaining(nombre);
     }
 
+    //Mustra que plantines estan en un area de cultivo
+    public List<Map<String, Object>> verPlantinDeAreaCultivo (Integer idAreaCultivo){
+        List<Object[]> resultado = areaCultivoRepositorio.verPlantinesEnAreaCultivo(idAreaCultivo);
+        List<Map<String, Object>> respuesta = new ArrayList<>();
+
+        for (Object[] fila : resultado){
+            Map<String, Object> mapAux = new HashMap<>();
+
+            mapAux.put("nombre", fila[0]);
+            mapAux.put("stock", fila[1]);
+            mapAux.put("tamaño", fila[2]);
+            mapAux.put("areaCultivo", fila[3]);
+
+            respuesta.add(mapAux);
+        }
+        return respuesta;
+    }
+
     //guardar nuevo area de cultivo
     public AreaCultivo guardarAreaCultivo (AreaCultivo areaCultivo){
         return areaCultivoRepositorio.save(areaCultivo);

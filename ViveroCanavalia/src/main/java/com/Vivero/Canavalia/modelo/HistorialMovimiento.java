@@ -13,11 +13,10 @@ public class HistorialMovimiento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "plantin_id", nullable = false)
-    private Plantin plantin;
+    @Column(name = "plantin_nombre", nullable = false, length = 30)
+    private String plantinNombre; // Ahora es un String en lugar de un Integer
 
-    @Column(name = "tipo_movimiento", nullable = false, length = 10)
+    @Column(name = "tipo_movimiento", length = 25)
     private String tipoMovimiento;
 
     @Column(nullable = false)
@@ -26,11 +25,10 @@ public class HistorialMovimiento {
     @Column(name = "fecha_movimiento", nullable = false)
     private LocalDateTime fechaMovimiento = LocalDateTime.now();
 
-    @ManyToOne
-    @JoinColumn(name = "area_cultivo_id")
-    private AreaCultivo areaCultivo;
+    @Column(name = "ingreso_id")
+    private Integer ingresoId;
 
-    @Column(length = 255)
-    private String descripcion;
-
+    @Column(length = 25)
+    private String tamaño;
 }
+

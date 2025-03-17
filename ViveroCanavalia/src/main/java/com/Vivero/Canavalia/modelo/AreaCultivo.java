@@ -1,5 +1,6 @@
 package com.Vivero.Canavalia.modelo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
@@ -19,5 +20,6 @@ public class AreaCultivo {
     private String medida;
 
     @OneToMany(mappedBy = "areaCultivo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<PlantinAreaCultivo> plantinAreas;
 }

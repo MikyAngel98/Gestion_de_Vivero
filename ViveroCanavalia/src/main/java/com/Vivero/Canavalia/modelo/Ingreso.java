@@ -14,13 +14,6 @@ public class Ingreso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "plantin_area_id", nullable = false)
-    private PlantinAreaCultivo plantinAreaCultivo;
-
-    @Column(nullable = false)
-    private Integer cantidad;
-
     @Column(name = "fecha_ingreso", nullable = false)
     private LocalDateTime fechaIngreso = LocalDateTime.now();
 

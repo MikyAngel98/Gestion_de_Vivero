@@ -1,0 +1,35 @@
+[33mcommit ecd13a266811306e931a5499b2ec1ce3bf82b0f3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m
+Author: MikyAngel98 <mikyangelf@gmail.com>
+Date:   Fri Mar 7 11:24:24 2025 -0400
+
+    Creacon de las clases Area Cultivo Servicio y controlador, se agrego buscador por nombre a plantin
+
+[33mcommit 70a41e21dc539868c7d8a49eb5389e7905f215c8[m
+Author: MikyAngel98 <mikyangelf@gmail.com>
+Date:   Thu Mar 6 21:25:27 2025 -0400
+
+    Creacion de ClasesRepository en paquete Repositorio
+
+[33mcommit e3b32d3f199ed29cba61faf410bb631052cc562c[m
+Author: MikyAngel98 <mikyangelf@gmail.com>
+Date:   Thu Mar 6 10:20:54 2025 -0400
+
+    Correccion de errores en las Clases Plantin y AreaCultivo
+
+[33mcommit 22bd21f1d52724d35456568dad7357c4825e4bcc[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: MikyAngel98 <mikyangelf@gmail.com>
+Date:   Thu Mar 6 09:56:02 2025 -0400
+
+    Creacion De las Entidades
+
+[33mcommit 59549e85f0cb258b4d08a55c486abbcaefe5d946[m
+Author: MikyAngel98 <mikyangelf@gmail.com>
+Date:   Fri Feb 28 17:26:09 2025 -0400
+
+    creacion de controlador, servicio, modelo y repositorio de Plantin
+
+[33mcommit d7377b6e944df378f00fbc566ef67792bd730123[m
+Author: MikyAngel98 <mikyangelf@gmail.com>
+Date:   Fri Feb 28 16:12:31 2025 -0400
+
+    creacion del Proyecto y bdd

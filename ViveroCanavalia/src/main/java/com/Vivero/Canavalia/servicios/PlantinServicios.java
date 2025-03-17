@@ -20,6 +20,24 @@ public class PlantinServicios {
         return plantinRepositorio.findByNombreContaining(nombre);
     }
 
+    //Mustra en que area de cultivo se encuentra un plantin
+    public List<Map<String, Object>> verUbicacionDePlantin (String nombrePlantin){
+        List<Object[]> resultado = plantinRepositorio.verUbicacionDePlantines(nombrePlantin);
+        List<Map<String, Object>> respuesta = new ArrayList<>();
+
+        for (Object[] fila : resultado){
+            Map<String, Object> mapAux = new HashMap<>();
+
+            mapAux.put("nombre", fila[0]);
+            mapAux.put("stock", fila[1]);
+            mapAux.put("tamaño", fila[2]);
+            mapAux.put("areaCultivo", fila[3]);
+
+            respuesta.add(mapAux);
+        }
+        return respuesta;
+    }
+
     public Optional<Plantin> buscarPorId(Integer id) {
 
         return plantinRepositorio.findById(id);
