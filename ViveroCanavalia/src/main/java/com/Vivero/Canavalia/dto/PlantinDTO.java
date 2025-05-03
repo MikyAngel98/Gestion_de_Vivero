@@ -3,7 +3,7 @@ package com.Vivero.Canavalia.dto;
 import lombok.Data;
 
 @Data
-public class PlantinIngresoDTO {
+public class PlantinDTO {
     private Integer plantinId; // ID del plantín
     private Integer areaCultivoId; // ID del área de cultivo
     private Integer cantidad; // Cantidad de plantines ingresados

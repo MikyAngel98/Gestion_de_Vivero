@@ -13,13 +13,6 @@ public class Salida {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "plantin_area_id", nullable = false)
-    private PlantinAreaCultivo plantinAreaCultivo;
-
-    @Column(nullable = false)
-    private Integer cantidad;
-
     @Column(name = "fecha_salida",nullable = false)
     private LocalDateTime fechaSalida = LocalDateTime.now();
 

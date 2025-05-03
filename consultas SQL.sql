@@ -30,25 +30,52 @@ as begin
 	inner join Plantin p on pac.plantin_id = p.id
 	inner join AreaCultivo ac on pac.area_cultivo_id = ac.id
 	where ac.id = @idAreaCultivo;
-end
+end;
+go
 
-exec sp_verPlantinesEnAreaCultivo @idAreaCultivo = 3;
+--aumenta el stock global del plantin cada vez que se realiza un ingreso
+create procedure sp_sumarStockGlobalPlantin(
+	@plantinId int,
+	@cantidadPlantin int)
+as begin
+	set nocount on;
 
-exec sp_verUbicacionPlantin @nombreplantin = 'Palta';
+	update Plantin
+	set stock_actual = stock_actual + @cantidadPlantin
+	where id = @plantinId;
 
-INSERT INTO PlantinAreaCultivo (plantin_id, area_cultivo_id, stock, tamaño) 
-VALUES 
-    (1, 2, 5, 'pequeño'), 
-    (2, 3, 8, 'Mediano'),
-	(1, 4, 5, 'Grande'), 
-    (4, 5, 8, 'Mediano'),
-    (3, 1, 10, 'Pequeño');
+end;
+go
 
+--disminuye el stock global del plantin cada vez que se realiza una salida
+create procedure sp_restarStockGlobalPlantin(
+	@plantinId int,
+	@cantidadPlantin int
+)
+as begin
+	set nocount on;
 
-	select * from Plantin
-	select * from AreaCultivo
+	update Plantin
+	set stock_actual = stock_actual + @cantidadPlantin
+	where id = @plantinId;
+end;
+go
 
+--muestra una lista de las areas de cultivo, plantines y detalles
+create procedure sp_mostrasAreaDeCultivosPlantines
+as begin
+	
+	select pac.id as id,
+		p.nombre as Plantin,
+		pac.tamaño as tamañoPlantin,
+		pac.stock as stock,
+		ac.nombre as AreaCultivo
+	
 
-	SELECT name 
-FROM sys.key_constraints 
-WHERE type = 'UQ' AND parent_object_id = OBJECT_ID('Plantin_Area_Cultivo');
+	from PlantinAreaCultivo pac
+	inner join Plantin p on p.id = pac.plantin_id
+	inner join AreaCultivo ac on ac.id = pac.area_cultivo_id 
+	order by Plantin
+end;
+
+exec sp_mostrasAreaDeCultivosPlantines

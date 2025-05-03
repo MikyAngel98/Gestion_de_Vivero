@@ -25,8 +25,8 @@ public class HistorialMovimiento {
     @Column(name = "fecha_movimiento", nullable = false)
     private LocalDateTime fechaMovimiento = LocalDateTime.now();
 
-    @Column(name = "ingreso_id")
-    private Integer ingresoId;
+    @Column(name = "movimiento_id")
+    private Integer movimientoId;
 
     @Column(length = 25)
     private String tamaño;

@@ -1,15 +1,13 @@
 package com.Vivero.Canavalia.servicios;
 
 
-import com.Vivero.Canavalia.dto.IngresoRequestDTO;
-import com.Vivero.Canavalia.dto.PlantinIngresoDTO;
+import com.Vivero.Canavalia.dto.IngresoDTO;
+import com.Vivero.Canavalia.dto.PlantinDTO;
 import com.Vivero.Canavalia.modelo.*;
 import com.Vivero.Canavalia.repositorio.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -20,24 +18,24 @@ public class IngresoServicio {
     private final AreaCultivoRepositorio areaCultivoRepositorio;
     private final PlantinAreaCultivoRepositorio plantinAreaCultivoRepositorio;
     private final TipoMovimientoRepositorio tipoMovimientoRepositorio;
-    private final HistorialMovimientoRepositorio  historialMovimientoRepositorio;
+    private final HistorialMovimientoServicio historialMovimientoServicio;
 
     @Transactional
-    public void registrarIngreso(IngresoRequestDTO datosRecibidos) {
+    public void registrarIngreso(IngresoDTO datosRecibidos) {
         // Registrar el ingreso y obtener el objeto guardado
         Ingreso ingreso = crearIngreso(datosRecibidos);
 
         // Procesar cada plantín del ingreso
-        for (PlantinIngresoDTO plantinDTO : datosRecibidos.getPlantines()) {
+        for (PlantinDTO plantinDTO : datosRecibidos.getPlantines()) {
             actualizarStockPlantin(plantinDTO);
-            registrarHistorialMovimiento(ingreso, plantinDTO);
+            historialMovimientoServicio.registrarHistorialMovimiento(ingreso, plantinDTO);
         }
     }
 
     /**
      * Registra un nuevo ingreso en la base de datos.
      */
-    private Ingreso crearIngreso(IngresoRequestDTO datosRecibidos) {
+    private Ingreso crearIngreso(IngresoDTO datosRecibidos) {
         TipoMovimiento tipoMovimiento = tipoMovimientoRepositorio.findById(datosRecibidos.getTipoMovimientoId())
                 .orElseThrow(() -> new RuntimeException("Tipo de movimiento no encontrado"));
 
@@ -50,7 +48,7 @@ public class IngresoServicio {
     /**
      * Actualiza el stock de un plantín en el área de cultivo correspondiente.
      */
-    private void actualizarStockPlantin(PlantinIngresoDTO plantinDTO) {
+    private void actualizarStockPlantin(PlantinDTO plantinDTO) {
         Plantin plantin = plantinRepositorio.findById(plantinDTO.getPlantinId())
                 .orElseThrow(() -> new RuntimeException("Plantín no encontrado"));
 
@@ -75,7 +73,7 @@ public class IngresoServicio {
 
     /**
      * Registra el historial del movimiento del ingreso de un plantín.
-     */
+
     private void registrarHistorialMovimiento(Ingreso ingreso, PlantinIngresoDTO plantinDTO) {
         Plantin plantin = plantinRepositorio.findById(plantinDTO.getPlantinId())
                 .orElseThrow(() -> new RuntimeException("Plantín no encontrado"));
@@ -91,7 +89,7 @@ public class IngresoServicio {
         historial.setTamaño(plantinDTO.getTamaño());
 
         historialMovimientoRepositorio.save(historial);
-    }
+    }*/
 
 
 }

@@ -43,12 +43,9 @@ GO
 -- Tabla Ingreso (Registra la entrada de nuevos plantines)
 CREATE TABLE Ingreso (
     id INT IDENTITY(1,1) PRIMARY KEY,
-    plantin_area_id INT NOT NULL,
-    cantidad INT NOT NULL CHECK (cantidad > 0),
     fecha_ingreso DATETIME NOT NULL DEFAULT GETDATE(),
     tipo_movimiento_id INT NOT NULL, 
     descripcion NVARCHAR(255),
-    FOREIGN KEY (plantin_area_id) REFERENCES PlantinAreaCultivo(id),
     FOREIGN KEY (tipo_movimiento_id) REFERENCES TipoMovimiento(id)
 );
 GO
@@ -56,12 +53,9 @@ GO
 -- Tabla Salida (Registra la salida de plantines)
 CREATE TABLE Salida (
     id INT IDENTITY(1,1) PRIMARY KEY,
-    plantin_area_id INT NOT NULL,
-    cantidad INT NOT NULL CHECK (cantidad > 0),
     fecha_salida DATETIME NOT NULL DEFAULT GETDATE(),
     tipo_movimiento_id INT NOT NULL, 
     descripcion NVARCHAR(255),
-    FOREIGN KEY (plantin_area_id) REFERENCES PlantinAreaCultivo(id),
     FOREIGN KEY (tipo_movimiento_id) REFERENCES TipoMovimiento(id)
 );
 GO
@@ -69,13 +63,11 @@ GO
 -- Tabla HistorialMovimientos (Registra todos los ingresos y salidas)
 CREATE TABLE HistorialMovimientos (
     id INT IDENTITY(1,1) PRIMARY KEY,
-    plantin_id INT NOT NULL,
-    tipo_movimiento NVARCHAR(10),
+    plantin_nombre VARCHAR(30) NOT NULL,
+    tipo_movimiento NVARCHAR(25),
     cantidad INT NOT NULL CHECK (cantidad > 0),
     fecha_movimiento DATETIME NOT NULL DEFAULT GETDATE(),
-    area_cultivo_id INT,
-    descripcion NVARCHAR(255),
-    FOREIGN KEY (plantin_id) REFERENCES Plantin(id),
-    FOREIGN KEY (area_cultivo_id) REFERENCES AreaCultivo(id)
+    ingreso_id INT,
+    tamaño NVARCHAR(255)
 );
 GO
