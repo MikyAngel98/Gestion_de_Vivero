@@ -14,12 +14,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RestController
 @RequestMapping("/plantines")
 public class PlantinControlador {
-     @Autowired
+
+    @Autowired
     private PlantinServicios plantinService;
 
     // Listar todos los plantines
     @GetMapping
-    public ResponseEntity<List<Plantin>>  listarTodos() {
+    public ResponseEntity<List<Plantin>> listarPlantines() {
 
         return ResponseEntity.ok(plantinService.listarTodos());
         //return plantinService.listarTodos();

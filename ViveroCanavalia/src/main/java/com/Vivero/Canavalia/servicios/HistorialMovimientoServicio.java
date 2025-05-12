@@ -1,11 +1,10 @@
 package com.Vivero.Canavalia.servicios;
 
-import com.Vivero.Canavalia.dto.PlantinDTO;
-import com.Vivero.Canavalia.modelo.HistorialMovimiento;
-import com.Vivero.Canavalia.modelo.Ingreso;
-import com.Vivero.Canavalia.modelo.Plantin;
-import com.Vivero.Canavalia.modelo.TipoMovimiento;
+import com.Vivero.Canavalia.dto.DetalleSalidaDTO;
+import com.Vivero.Canavalia.dto.PlantinIngresoDTO;
+import com.Vivero.Canavalia.modelo.*;
 import com.Vivero.Canavalia.repositorio.HistorialMovimientoRepositorio;
+import com.Vivero.Canavalia.repositorio.PlantinAreaCultivoRepositorio;
 import com.Vivero.Canavalia.repositorio.PlantinRepositorio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,13 +17,14 @@ public class HistorialMovimientoServicio {
 
     private final PlantinRepositorio plantinRepositorio;
     private final HistorialMovimientoRepositorio historialMovimientoRepositorio;
+    private final PlantinAreaCultivoRepositorio plantinAreaCultivo;
 
     /**
      * Registra el historial del movimiento del plantín.
      */
-    public void registrarHistorialMovimiento(Ingreso ingreso, PlantinDTO plantinDTO) {
+    public void registrarHistorialMovimientoingreso(Ingreso ingreso, PlantinIngresoDTO plantinIngresoDTO) {
 
-        Plantin plantin = plantinRepositorio.findById(plantinDTO.getPlantinId())
+        Plantin plantin = plantinRepositorio.findById(plantinIngresoDTO.getPlantinId())
                 .orElseThrow(() -> new RuntimeException("Plantín no encontrado"));
 
         TipoMovimiento tipoMovimiento = ingreso.getTipoMovimiento();
@@ -32,10 +32,32 @@ public class HistorialMovimientoServicio {
         HistorialMovimiento historial = new HistorialMovimiento();
         historial.setPlantinNombre(plantin.getNombre());
         historial.setTipoMovimiento(tipoMovimiento.getNombre());
-        historial.setCantidad(plantinDTO.getCantidad());
+        historial.setCantidad(plantinIngresoDTO.getCantidad());
         historial.setFechaMovimiento(LocalDateTime.now());
         historial.setMovimientoId(ingreso.getId());
-        historial.setTamaño(plantinDTO.getTamaño());
+        historial.setTamaño(plantinIngresoDTO.getTamaño());
+
+        historialMovimientoRepositorio.save(historial);
+    }
+
+    public void registrarHistorialMovimientoSalida(Salida salida, DetalleSalidaDTO detalleSalidaDTO){
+
+        PlantinAreaCultivo inventario = plantinAreaCultivo.findById(detalleSalidaDTO.getIdPlantinAreaCultivo())
+                .orElseThrow(() -> new RuntimeException("No se encontró el plantín con ID: " + detalleSalidaDTO.getIdPlantinAreaCultivo()));
+
+        TipoMovimiento tipoMovimiento = salida.getTipoMovimiento(); // obtenemos el tipo de movimiento
+        Plantin plantin = inventario.getPlantin(); // optenemos el plantin
+
+        HistorialMovimiento historial = new HistorialMovimiento();
+
+        historial.setPlantinNombre(plantin.getNombre());
+        historial.setCantidad(detalleSalidaDTO.getCantidad());
+        historial.setTamaño(inventario.getTamaño());
+
+        historial.setTipoMovimiento(tipoMovimiento.getNombre());
+
+        historial.setFechaMovimiento(salida.getFechaSalida());
+        historial.setMovimientoId(salida.getId());
 
         historialMovimientoRepositorio.save(historial);
     }

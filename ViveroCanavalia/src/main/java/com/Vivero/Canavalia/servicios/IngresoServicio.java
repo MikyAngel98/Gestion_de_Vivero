@@ -2,7 +2,7 @@ package com.Vivero.Canavalia.servicios;
 
 
 import com.Vivero.Canavalia.dto.IngresoDTO;
-import com.Vivero.Canavalia.dto.PlantinDTO;
+import com.Vivero.Canavalia.dto.PlantinIngresoDTO;
 import com.Vivero.Canavalia.modelo.*;
 import com.Vivero.Canavalia.repositorio.*;
 import lombok.RequiredArgsConstructor;
@@ -22,13 +22,18 @@ public class IngresoServicio {
 
     @Transactional
     public void registrarIngreso(IngresoDTO datosRecibidos) {
+
+        if (datosRecibidos.getPlantines() == null || datosRecibidos.getPlantines().isEmpty()) {
+            throw new RuntimeException("Debe tener al menos un Plantin para Registrar");
+        }
+
         // Registrar el ingreso y obtener el objeto guardado
         Ingreso ingreso = crearIngreso(datosRecibidos);
 
         // Procesar cada plantín del ingreso
-        for (PlantinDTO plantinDTO : datosRecibidos.getPlantines()) {
-            actualizarStockPlantin(plantinDTO);
-            historialMovimientoServicio.registrarHistorialMovimiento(ingreso, plantinDTO);
+        for (PlantinIngresoDTO plantinIngresoDTO : datosRecibidos.getPlantines()) {
+            actualizarStockPlantin(plantinIngresoDTO);
+            historialMovimientoServicio.registrarHistorialMovimientoingreso(ingreso, plantinIngresoDTO);
         }
     }
 
@@ -48,48 +53,31 @@ public class IngresoServicio {
     /**
      * Actualiza el stock de un plantín en el área de cultivo correspondiente.
      */
-    private void actualizarStockPlantin(PlantinDTO plantinDTO) {
-        Plantin plantin = plantinRepositorio.findById(plantinDTO.getPlantinId())
+    private void actualizarStockPlantin(PlantinIngresoDTO plantinIngresoDTO) {
+        Plantin plantin = plantinRepositorio.findById(plantinIngresoDTO.getPlantinId())
                 .orElseThrow(() -> new RuntimeException("Plantín no encontrado"));
 
-        AreaCultivo areaCultivo = areaCultivoRepositorio.findById(plantinDTO.getAreaCultivoId())
+        AreaCultivo areaCultivo = areaCultivoRepositorio.findById(plantinIngresoDTO.getAreaCultivoId())
                 .orElseThrow(() -> new RuntimeException("Área de cultivo no encontrada"));
 
         PlantinAreaCultivo plantinArea = plantinAreaCultivoRepositorio
-                .findByPlantinAndAreaCultivoAndTamaño(plantin, areaCultivo, plantinDTO.getTamaño())
+                .findByPlantinAndAreaCultivoAndTamaño(plantin, areaCultivo, plantinIngresoDTO.getTamaño())
                 .orElse(new PlantinAreaCultivo());
 
         if (plantinArea.getId() == null) {
-            plantinArea.setPlantin(plantin);
-            plantinArea.setAreaCultivo(areaCultivo);
-            plantinArea.setTamaño(plantinDTO.getTamaño());
+            plantinArea.setPlantin(plantin); //inserta el plantin
+            plantinArea.setAreaCultivo(areaCultivo);//inserta el area de cultivo
+            plantinArea.setTamaño(plantinIngresoDTO.getTamaño()); // ingresa el tamaño del plantin entrante
             plantinArea.setStock(0);
         }
 
-        plantinArea.setStock(plantinArea.getStock() + plantinDTO.getCantidad());
+        plantinArea.setStock(plantinArea.getStock() + plantinIngresoDTO.getCantidad()); //aumenta la cantidad del plantin
+        plantin.setStockActual(plantin.getStockActual() + plantinIngresoDTO.getCantidad());
 
+        plantinRepositorio.save(plantin); //incrementa el stock total del plantin
         plantinAreaCultivoRepositorio.save(plantinArea);
     }
-
-    /**
-     * Registra el historial del movimiento del ingreso de un plantín.
-
-    private void registrarHistorialMovimiento(Ingreso ingreso, PlantinIngresoDTO plantinDTO) {
-        Plantin plantin = plantinRepositorio.findById(plantinDTO.getPlantinId())
-                .orElseThrow(() -> new RuntimeException("Plantín no encontrado"));
-
-        TipoMovimiento tipoMovimiento = ingreso.getTipoMovimiento();
-
-        HistorialMovimiento historial = new HistorialMovimiento();
-        historial.setPlantinNombre(plantin.getNombre());
-        historial.setTipoMovimiento(tipoMovimiento.getNombre());
-        historial.setCantidad(plantinDTO.getCantidad());
-        historial.setFechaMovimiento(LocalDateTime.now());
-        historial.setIngresoId(ingreso.getId());
-        historial.setTamaño(plantinDTO.getTamaño());
-
-        historialMovimientoRepositorio.save(historial);
-    }*/
+    
 
 
 }

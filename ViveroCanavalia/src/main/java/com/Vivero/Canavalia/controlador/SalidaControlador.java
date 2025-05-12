@@ -13,7 +13,7 @@ public class SalidaControlador {
         @Autowired
         private SalidaServicio salidaService;
 
-        @PostMapping
+        @PostMapping("/Registrar")
         public ResponseEntity<?> registrarSalida(@RequestBody SalidaDTO salidaDTO) {
             try {
                 salidaService.registrarSalida(salidaDTO);
